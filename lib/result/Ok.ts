@@ -1,7 +1,7 @@
-import { Result } from './Result';
+import { ErrorType, Result } from './Result';
 
-export class Ok<V, Err> extends Result<V, Err> {
-  constructor(readonly _v: V | Err) {
+export class Ok<V, E = ErrorType> extends Result<V, E> {
+  constructor(readonly _v: V) {
     super(_v);
   }
 

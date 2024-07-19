@@ -1,4 +1,5 @@
-import { type Result, result } from './result';
+import { HttpClient } from './core';
+import { type Result, result, err, ok } from './result';
 
 type Param = Response | (() => Response | Promise<Response>);
 
@@ -12,7 +13,7 @@ export async function buildResult(param: Param): Promise<Result<Response>> {
   if (param instanceof Response) {
     response = param;
   } else {
-    const res = await safeRun(param);
+    const res = await safeCall(param);
     if (res.is_ok()) {
       response = res.unwrap() as Response;
     } else {
@@ -21,7 +22,7 @@ export async function buildResult(param: Param): Promise<Result<Response>> {
   }
 
   if (response.ok) {
-    return result(response);
+    return ok(response);
     try {
       // const data: DataType = await response.json();
       // if (data.errCode) {
@@ -44,7 +45,7 @@ export async function buildResult(param: Param): Promise<Result<Response>> {
       return result(new Error('数据解析失败'));
     }
   } else {
-    return result(
+    return err(
       new Error(
         `获取数据失败${response.status ? `, 状态码${response.status}` : ''}`
       )
@@ -52,15 +53,32 @@ export async function buildResult(param: Param): Promise<Result<Response>> {
   }
 }
 
-async function safeRun(
-  fn: Exclude<Param, Response>
-): Promise<Result<Response>> {
+// async function safeRun(
+//   fn: Exclude<Param, Response>
+// ): Promise<Result<Response>> {
+//   try {
+//     const r = await fn();
+//     return result(r);
+//   } catch (err) {
+//     // 该错误产生的原因主要为本机网络环境异常或域名错误
+//     console.error('[buildResult]', err);
+//     return result(new Error('网络请求函数允许失败'));
+//   }
+// }
+
+async function safeCall<R>(runnable: () => Promise<R> | R): Promise<Result<R>> {
   try {
-    const r = await fn();
-    return result(r);
-  } catch (err) {
-    // 该错误产生的原因主要为本机网络环境异常或域名错误
-    console.error('[buildResult]', err);
-    return result(new Error('网络请求函数允许失败'));
+    const res = await runnable();
+    return ok(res);
+  } catch (e) {
+    console.error('[safeCall]', e);
+    return err(e as Error);
   }
+}
+
+/**
+ * 创建http客户端
+ */
+export function create() {
+  return new HttpClient();
 }
