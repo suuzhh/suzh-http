@@ -1,11 +1,19 @@
-import { defineConfig } from 'vite'
+import { resolve } from 'node:path';
+import { defineConfig } from 'vite';
+
+const libPath = resolve(__dirname, 'lib');
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@lib': libPath,
+    },
+  },
   build: {
     lib: {
-      entry: './src/index.ts',
+      entry: './lib/index.ts',
       name: 'suzh-http',
       fileName: 'suzh-http',
     },
   },
-})
+});

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "strict": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@lib/*": ["lib/*"],
+    },
+  },
+  "include": ["src/**/*.ts", "lib/**/*.ts", "fixtures/**/*.json"],
+  "exclude": []
+}
