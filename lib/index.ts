@@ -1,4 +1,4 @@
-import { HttpClient } from './core';
+import { createHttpClient, IHttpClient } from './core';
 import { type Result, result, err, ok } from './result';
 
 type Param = Response | (() => Response | Promise<Response>);
@@ -80,5 +80,17 @@ async function safeCall<R>(runnable: () => Promise<R> | R): Promise<Result<R>> {
  * 创建http客户端
  */
 export function create() {
-  return new HttpClient();
+  return createHttpClient();
+}
+
+/**
+ * 供第三方拓展http功能
+ * 
+ * 包括但不限于
+ * - format and validate response
+ * - format and validate request
+ * - 拓展请求类型
+ **/
+export function extend(plugin: IPlugin | () => IPlugin) {
+  return create();
 }
