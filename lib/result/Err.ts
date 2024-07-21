@@ -5,10 +5,6 @@ export class Err<E = ErrorType, V = any> extends Result<V, E> {
     super(_v);
   }
 
-  is_ok(): boolean {
-    return false;
-  }
-  is_err(): boolean {
-    return true;
-  }
+  readonly is_ok = false;
+  readonly is_err = true;
 }

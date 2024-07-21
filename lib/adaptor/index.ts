@@ -1,0 +1,1 @@
+export { FetchAdaptor } from './Adaptor';

@@ -10,8 +10,8 @@ function _isOk(v: unknown): v is Exclude<typeof v, ErrorType> {
   return true;
 }
 
-export function result<T>(v: T) {
-  if (_isOk(v)) {
+export function result<T>(v: T, compare: (v: T) => boolean = _isOk) {
+  if (compare(v)) {
     return new Ok(v);
   }
   return new Err(v);
