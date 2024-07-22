@@ -72,10 +72,10 @@ export class FetchAdaptor implements IHttpAdaptor {
         const r = new Request(url, { ...req, signal: ab.signal });
         const result = await safeCall(() => timeoutCall(timeout, fetch(r)));
 
-        return result.map_or<ISendResult<Response>>(
+        return result.map_or<ISendResult>(
           { error: result.unwrap() as Error },
-          (data) => ({
-            data,
+          (response) => ({
+            response,
           })
         );
       },
@@ -89,7 +89,7 @@ export class FetchAdaptor implements IHttpAdaptor {
     };
   }
 
-  response<R>(response: Response): Promise<ISendResult<R>> {
+  response<R>(response: Response): Promise<ISendResult> {
     throw new Error('Method not implemented.');
   }
 }

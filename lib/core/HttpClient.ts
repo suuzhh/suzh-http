@@ -7,7 +7,13 @@ export interface IHttpClient {
 
 function transformUrl(url: string | URL, query: IRequestInit['query']): string {
   if (!(url instanceof URL)) {
-    url = new URL(url);
+    // https://github.com/axios/axios/blob/v1.x/lib/core/buildFullPath.js
+    try {
+      url = new URL(url);
+    } catch {
+      // 在node环境下，不支持location
+      url = new URL(url, location?.toString?.());
+    }
   }
 
   if (query) {

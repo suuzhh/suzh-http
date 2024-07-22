@@ -11,8 +11,29 @@ describe('browser http', async () => {
     expect(error!.message).toBe('request timeout');
   });
 
-  test('url', async () => {
+  test('query', async () => {
     const client = create();
-    const { send } = client.get('http://localhost:5173/api/test');
+    const { response: res1 } = await client
+      .get('http://localhost:5173/api/test', {
+        query: { a: 1 },
+      })
+      .send();
+
+    expect(res1).toBeDefined();
+    expect(res1?.url).toBe('http://localhost:5173/api/test?a=1');
+
+    const { response: res2 } = await client
+      .get('/api/test', {
+        query: { a: 1 },
+      })
+      .send();
+    expect(res2?.url?.split('?')?.[1]).toBe('a=1');
+
+    const { response: res3 } = await client
+      .get('/api/test', {
+        query: new URLSearchParams({ a: '1' }),
+      })
+      .send();
+    expect(res3?.url?.split('?')?.[1]).toBe('a=1');
   });
 });

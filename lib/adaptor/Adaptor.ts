@@ -1,5 +1,5 @@
-export interface ISendResult<T> {
-  data?: T;
+export interface ISendResult {
+  response?: Response;
   error?: Error;
 }
 
@@ -15,10 +15,12 @@ export interface IHttpAdaptor {
   request: (url: string, request: IRequestInit) => IRequestHandler;
 
   /** 处理响应 */
-  response<R>(response: Response): Promise<ISendResult<R>>;
+  response<R>(response: Response): Promise<ISendResult>;
 }
 
 export interface IRequestHandler {
-  send: () => Promise<ISendResult<Response>>;
+  send: () => Promise<ISendResult>;
   abort: () => void;
+
+
 }
