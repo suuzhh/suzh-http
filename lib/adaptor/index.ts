@@ -1,1 +1,1 @@
-export { FetchAdaptor } from './Adaptor';
+export { FetchAdaptor } from './Browser';

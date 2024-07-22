@@ -1,24 +1,24 @@
-import type { IHttpRequest } from './Request';
-import type { IHttpResponse } from './Response';
-
-interface IHttpAdaptor {
-  /** 发起请求 */
-  request: (request: IHttpRequest) => Promise<IHttpResponse>;
-
-  /** 处理响应 */
-  response(): Promise<IHttpResponse>;
+export interface ISendResult<T> {
+  data?: T;
+  error?: Error;
 }
 
-export class FetchAdaptor implements IHttpAdaptor {
-  async request(request: IHttpRequest): Promise<IHttpResponse> {
-    const req = new Request(request.url, {
-      method: 'GET',
-      headers: request.headers,
-      body: request.body,
-    });
+export interface IRequestInit {
+  headers?: HeadersInit;
+  /** 超时时间 默认60s */
+  timeout?: number;
+  /** 查询参数，最终会转换为url的一部分 */
+  query?: Record<string, string | number> | URLSearchParams;
+}
+export interface IHttpAdaptor {
+  /** 创建请求 */
+  request: (url: string, request: IRequestInit) => IRequestHandler;
 
-    return fetch(req);
-  }
+  /** 处理响应 */
+  response<R>(response: Response): Promise<ISendResult<R>>;
+}
 
-  async response() {}
+export interface IRequestHandler {
+  send: () => Promise<ISendResult<Response>>;
+  abort: () => void;
 }

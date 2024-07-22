@@ -20,6 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.14.11",
+    "@vitest/browser": "^2.0.3",
     "prettier": "3.3.3",
     "typescript": "^5.5.3",
     "vite": "^5.3.4",

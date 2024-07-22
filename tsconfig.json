@@ -10,6 +10,6 @@
       "@lib/*": ["lib/*"],
     },
   },
-  "include": ["src/**/*.ts", "lib/**/*.ts", "fixtures/**/*.json"],
+  "include": ["src/**/*.ts", "lib/**/*.ts", "fixtures/**/*.json", "tests/**/*.test.ts"],
   "exclude": []
 }

@@ -1,8 +1,8 @@
-import { err, ok, type Result } from '@lib/result';
+import { err, ok, type IResult } from '@lib/result';
 
 export async function safeCall<R>(
   runnable: () => Promise<R> | R
-): Promise<Result<R>> {
+): Promise<IResult<R>> {
   try {
     const res = await runnable();
     return ok(res);
