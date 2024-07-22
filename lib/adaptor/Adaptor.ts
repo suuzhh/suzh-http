@@ -9,6 +9,9 @@ export interface IRequestInit {
   timeout?: number;
   /** 查询参数，最终会转换为url的一部分 */
   query?: Record<string, string | number> | URLSearchParams;
+  /** 请求体 */
+  body?: Blob | FormData | string | URLSearchParams;
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
 }
 export interface IHttpAdaptor {
   /** 创建请求 */
@@ -21,6 +24,4 @@ export interface IHttpAdaptor {
 export interface IRequestHandler {
   send: () => Promise<ISendResult>;
   abort: () => void;
-
-
 }

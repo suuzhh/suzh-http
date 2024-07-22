@@ -3,6 +3,7 @@ import { IRequestHandler, IRequestInit } from '@lib/adaptor/Adaptor';
 
 export interface IHttpClient {
   get(url: string | URL, initRequest?: IRequestInit): IRequestHandler;
+  post(url: string | URL, body: any, initRequest?: IRequestInit): IRequestHandler;
 }
 
 function transformUrl(url: string | URL, query: IRequestInit['query']): string {
@@ -25,7 +26,7 @@ function transformUrl(url: string | URL, query: IRequestInit['query']): string {
     }
   }
 
-  return new URL(url).toString();
+  return url.toString();
 }
 
 export const createHttpClient = (): IHttpClient => {
@@ -34,10 +35,17 @@ export const createHttpClient = (): IHttpClient => {
 
   return {
     get: (url: string | URL, initRequest?: IRequestInit) => {
-      return adaptor.request(
-        transformUrl(url, initRequest?.query),
-        initRequest
-      );
+      return adaptor.request(transformUrl(url, initRequest?.query), {
+        ...initRequest,
+        method: 'GET',
+      });
+    },
+
+    post: (url: string | URL, body: any, initRequest?: IRequestInit) => {
+      return adaptor.request(transformUrl(url, initRequest?.query), {
+        ...initRequest,
+        method: 'POST',
+      });
     },
   };
 };
